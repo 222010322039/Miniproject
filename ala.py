@@ -1,3 +1,5 @@
+%%writefile app.py
+
 import streamlit as st
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
@@ -47,12 +49,11 @@ if click and uploadedJD and uploadedResumes:
 
     matches.sort(key=lambda x: x[0], reverse=True)
 
-    st.write("Top 2 Resumes:")
-    for i in range(min(2, len(matches))):
+    st.write("Top Resumes:")
+    for i in range(len(matches)):
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
         st.write(resume_text)
         st.write("-" * 50)
 
-st.caption(" ~ made by siddhraj")
-
+st.caption(" ~ made by Team P7132")
