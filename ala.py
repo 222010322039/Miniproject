@@ -100,9 +100,9 @@ if click and uploadedJD and uploadedResumes:
         st.write("Category:")
         st.write(experience_data[i])
 
-        st.write("Skills Count:")
-        st.write(skills_count[i])
-        st.write("-" * 50)
+        # st.write("Skills Count:")
+        # st.write(skills_count[i])
+        # st.write("-" * 50)
 
     # Create a bar chart using Altair for skills count
     skills_df = pd.DataFrame(skills_count)
