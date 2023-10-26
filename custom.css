@@ -1,0 +1,14 @@
+/* custom.css */
+.custom-header {
+    background-color: #3399FF;
+    color: #FFFFFF;
+    padding: 10px;
+}
+
+.custom-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
