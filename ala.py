@@ -25,7 +25,7 @@ if click and uploadedJD and uploadedResumes:
     except:
         st.write("Error reading job description PDF")
 
-    job_description = job_description lower()
+    job_description = job_description.lower()
 
     st.write("Job Description:")
     st.write(job_description)
@@ -87,7 +87,7 @@ if click and uploadedJD and uploadedResumes:
 
     # Create a bar chart for match percentages
     match_percentages_df = pd.DataFrame({
-        'Resume': [f"Resume {i+1}" for i in range(len(percentages))],
+        'Resume': [f"Resume {i+1}" for i in range(len(percentages)],
         'Match Percentage': percentages
     })
 
