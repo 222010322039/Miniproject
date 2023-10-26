@@ -4,8 +4,11 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import altair as alt
-import streamlit as st
-
+from gensim.summarization import summarize
+from pyresparser import ResumeParser
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import io
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -38,6 +41,9 @@ if click and uploadedJD and uploadedResumes:
     matches = []
     skills_count = []
 
+    # Initialize word cloud data
+    wordcloud_data = ""
+
     for idx, uploadedResume in enumerate(uploadedResumes):
         try:
             with pdfplumber.open(uploadedResume) as pdf:
@@ -56,6 +62,9 @@ if click and uploadedJD and uploadedResumes:
         # Count skills in the resume
         skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
         skills_count.append(skill_count)
+
+        # Update word cloud data
+        wordcloud_data += resume_text
 
     matches.sort(key=lambda x: x[0], reverse=True)
 
@@ -107,5 +116,13 @@ if click and uploadedJD and uploadedResumes:
     )
 
     st.altair_chart(match_percentages_chart, use_container_width=True)
+
+    # Word Cloud
+    st.subheader("Word Cloud of Most Mentioned Words")
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(wordcloud_data)
+    plt.figure(figsize=(8, 4))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis("off")
+    st.pyplot()
 
 st.caption(" ~ made by Team P7132")
