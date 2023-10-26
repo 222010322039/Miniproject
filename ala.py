@@ -7,13 +7,15 @@ import altair as alt
 import re
 
 def extract_experience(resume_text):
-    # Example pattern to extract all types of experience (customize as per your needs)
-    experience_pattern = r'Experience:(.*?)(?:Education:|Skills:|$)'
-    match = re.search(experience_pattern, resume_text, re.DOTALL)
-    if match:
-        return match.group(1).strip()
+    # Search for the word "Experience" in the resume text
+    experience_match = re.search(r'Experience', resume_text)
+    
+    if experience_match:
+        # If "Experience" is found, extract the text following it
+        experience_text = resume_text[experience_match.end():]
+        return experience_text.strip()
     else:
-        return "Not found"
+        return "No experience found"
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -69,7 +71,7 @@ if click and uploadedJD and uploadedResumes:
         skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
         skills_count.append(skill_count)
 
-        # New Feature 3: Extract All Types of Experience
+        # New Feature 3: Extract Experience
         experience_text.append({
             'Resume': f"Resume {idx + 1}",
             'Experience': extract_experience(resume_text),
@@ -90,7 +92,7 @@ if click and uploadedJD and uploadedResumes:
         st.write("Summary of Resume:")
         st.write(summarized_resume)
         
-        # New Feature 5: Display All Types of Experience
+        # New Feature 5: Display Experience
         st.write("Experience:")
         st.write(experience_text[i])
 
