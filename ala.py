@@ -4,7 +4,16 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import altair as alt
-import streamlit as st
+import re
+
+def extract_cgpa(resume_text):
+    # Example pattern to extract CGPA (customize as per your needs)
+    cgpa_pattern = r'CGPA: (\d+\.\d+)'
+    match = re.search(cgpa_pattern, resume_text)
+    if match:
+        return match.group(1)
+    else:
+        return "Not found"
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -60,11 +69,10 @@ if click and uploadedJD and uploadedResumes:
         skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
         skills_count.append(skill_count)
 
-        # New Feature 3: Extract Academic Percentages
-        # This example extracts CGPA; you can customize it for your needs.
+        # New Feature 3: Extract Academic Percentages (CGPA)
         academic_percentages.append({
             'Resume': f"Resume {idx + 1}",
-            'CGPA': extract_cgpa(resume_text),  # Implement extract_cgpa function
+            'CGPA': extract_cgpa(resume_text),
         })
 
     matches.sort(key=lambda x: x[0], reverse=True)
