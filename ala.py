@@ -2,8 +2,6 @@ import streamlit as st
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import pandas as pd
-import altair as alt
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -42,30 +40,22 @@ if click and uploadedJD and uploadedResumes:
         resume_text = resume_text.lower()
 
         similarity_matrix = cosine_similarity(matrix, cv.transform([resume_text]))
-        match = round(similarity_matrix[0][0] * 100, 2)
+        match = similarity_matrix[0][0] * 100
+        match = round(match, 2)
 
         matches.append((match, resume_text))
 
     matches.sort(key=lambda x: x[0], reverse=True)
 
     st.write("Top Resumes:")
-    percentages = [match[0] for match in matches]  # Extract match percentages
-
     for i in range(len(matches)):
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
         st.write(resume_text)
         st.write("-" * 50)
 
-    # Create a bar chart using Altair
-    df = pd.DataFrame({'Resume': [f"Resume {i+1}" for i in range(len(percentages)], 'Match Percentage': percentages})
-    chart = alt.Chart(df).mark_bar().encode(
-        x='Resume',
-        y='Match Percentage'
-    ).properties(
-        width=400
-    )
-
-    st.altair_chart(chart, use_container_width=True)
+    # Create a bar chart to display match percentages
+    chart_data = [match[0] for match in matches]
+    st.bar_chart(chart_data)
 
 st.caption(" ~ made by Team P7132")
