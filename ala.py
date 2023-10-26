@@ -4,13 +4,31 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import altair as alt
-st.markdown("<div class='custom-header'>Custom Header</div>", unsafe_allow_html=True)
-st.button("Click me", key="custom-button", container_class="custom-button")
+import streamlit as st
 
+# Link to the custom CSS file
 st.markdown(
     '<link rel="stylesheet" type="text/css" href="custom.css">',
     unsafe_allow_html=True
 )
+
+st.title("Customized Streamlit App")
+
+# Apply custom styling to elements
+st.markdown("<h2 class='custom-header'>Custom Header</h2>", unsafe_allow_html=True)
+
+# Create a styled button using custom CSS
+st.markdown(
+    '<button class="custom-button" onclick="alert(\'Button Clicked!\')">Click me</button>',
+    unsafe_allow_html=True
+)
+
+st.markdown("<p class='custom-text'>This is a custom text.</p>", unsafe_allow_html=True)
+
+st.image("image.jpg", caption="Custom Image", use_column_width=True, container_class="custom-image")
+
+# Create a link
+st.markdown('<a href="https://www.example.com" target="_blank">Visit Example</a>', unsafe_allow_html=True)
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
