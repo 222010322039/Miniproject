@@ -4,6 +4,9 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import altair as alt
+st.markdown("<div class='custom-header'>Custom Header</div>", unsafe_allow_html=True)
+st.button("Click me", key="custom-button", container_class="custom-button")
+
 st.markdown(
     '<link rel="stylesheet" type="text/css" href="custom.css">',
     unsafe_allow_html=True
