@@ -6,9 +6,9 @@ import pandas as pd
 import altair as alt
 import re
 
-def categorize_experience(resume_text):
-    # Search for the word "Experience" in the resume text
-    if re.search(r'Experience', resume_text):
+def extract_experience(resume_text):
+    # Check if the word "experience" exists in the resume
+    if "experience" in resume_text.lower():
         return "Experienced"
     else:
         return "Not Experienced"
@@ -46,8 +46,7 @@ if click and uploadedJD and uploadedResumes:
 
     matches = []
     skills_count = []
-    experience_text = []
-
+    experience_data = []
     experienced_count = 0
     not_experienced_count = 0
 
@@ -70,19 +69,19 @@ if click and uploadedJD and uploadedResumes:
         skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
         skills_count.append(skill_count)
 
-        # New Feature 3: Categorize Experience
-        experience_category = categorize_experience(resume_text)
-        experience_text.append({
+        # New Feature 3: Determine if the candidate is "Experienced" or "Not Experienced"
+        experience_category = extract_experience(resume_text)
+        experience_data.append({
             'Resume': f"Resume {idx + 1}",
             'Experience': experience_category,
         })
-
+        
         if experience_category == "Experienced":
             experienced_count += 1
         else:
             not_experienced_count += 1
 
-    matches.sort by=lambda x: x[0], reverse=True
+    matches.sort(key=lambda x: x[0], reverse=True)
 
     st.write("Top Resumes:")
     percentages = [match[0] for match in matches]  # Extract match percentages
@@ -91,15 +90,15 @@ if click and uploadedJD and uploadedResumes:
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
         
-        # New Feature 4: Summary Sentences
+        # New Feature 4: Display a Summary of Resume
         resume_lines = resume_text.split('\n')[:5]
         summarized_resume = "\n".join(resume_lines)
         st.write("Summary of Resume:")
         st.write(summarized_resume)
         
-        # New Feature 5: Display Experience
-        st.write("Experience:")
-        st.write(experience_text[i])
+        # New Feature 5: Display Experience Category
+        st.write("Experience Category:")
+        st.write(experience_data[i])
 
         st.write("Skills Count:")
         st.write(skills_count[i])
@@ -137,7 +136,7 @@ if click and uploadedJD and uploadedResumes:
 
     st.altair_chart(match_percentages_chart, use_container_width=True)
 
-    # New Feature 6: Pie Chart for Experience
+    # Pie Chart for Experience
     st.write("Distribution of Experience:")
     experience_data = pd.DataFrame({
         'Category': ['Experienced', 'Not Experienced'],
