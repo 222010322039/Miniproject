@@ -85,4 +85,19 @@ if click and uploadedJD and uploadedResumes:
 
     st.altair_chart(skills_chart, use_container_width=True)
 
+    # Create a bar chart for match percentages
+    match_percentages_df = pd.DataFrame({
+        'Resume': [f"Resume {i+1}" for i in range(len(percentages)],
+        'Match Percentage': percentages
+    })
+
+    match_percentages_chart = alt.Chart(match_percentages_df).mark_bar().encode(
+        alt.X('Resume:N', title='Resume'),
+        alt.Y('Match Percentage:Q', title='Match Percentage')
+    ).properties(
+        width=600  # Increase the width as needed
+    )
+
+    st.altair_chart(match_percentages_chart, use_container_width=True)
+
 st.caption(" ~ made by Team P7132")
