@@ -6,12 +6,12 @@ import pandas as pd
 import altair as alt
 import re
 
-def extract_cgpa(resume_text):
-    # Example pattern to extract CGPA (customize as per your needs)
-    cgpa_pattern = r'CGPA: (\d+\.\d+)'
-    match = re.search(cgpa_pattern, resume_text)
+def extract_experience(resume_text):
+    # Example pattern to extract previous work experience (customize as per your needs)
+    experience_pattern = r'Work Experience:(.*?)(?:Education:|Skills:|$)'
+    match = re.search(experience_pattern, resume_text, re.DOTALL)
     if match:
-        return match.group(1)
+        return match.group(1).strip()
     else:
         return "Not found"
 
@@ -48,7 +48,7 @@ if click and uploadedJD and uploadedResumes:
 
     matches = []
     skills_count = []
-    academic_percentages = []
+    experience_text = []
 
     for idx, uploadedResume in enumerate(uploadedResumes):
         try:
@@ -69,10 +69,10 @@ if click and uploadedJD and uploadedResumes:
         skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
         skills_count.append(skill_count)
 
-        # New Feature 3: Extract Academic Percentages (CGPA)
-        academic_percentages.append({
+        # New Feature 3: Extract Previous Work Experience
+        experience_text.append({
             'Resume': f"Resume {idx + 1}",
-            'CGPA': extract_cgpa(resume_text),
+            'Experience': extract_experience(resume_text),
         })
 
     matches.sort(key=lambda x: x[0], reverse=True)
@@ -90,9 +90,9 @@ if click and uploadedJD and uploadedResumes:
         st.write("Summary of Resume:")
         st.write(summarized_resume)
         
-        # New Feature 5: Display Academic Percentages
-        st.write("Academic Percentages:")
-        st.write(academic_percentages[i])
+        # New Feature 5: Display Previous Work Experience
+        st.write("Previous Work Experience:")
+        st.write(experience_text[i])
 
         st.write("Skills Count:")
         st.write(skills_count[i])
@@ -100,7 +100,7 @@ if click and uploadedJD and uploadedResumes:
 
     # Create a bar chart using Altair for skills count
     skills_df = pd.DataFrame(skills_count)
-    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))]
+    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))
 
     skills_chart = alt.Chart(skills_df).transform_fold(
         skills_to_search,
