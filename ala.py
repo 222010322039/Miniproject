@@ -52,7 +52,7 @@ if click and uploadedJD and uploadedResumes:
         matches.append((match, resume_text))
 
         # Count skills in the resume
-        skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
+        skill_count = {skill: resume_text.lower().count(skill.lower()) for skill in skills_to_search}
         skills_count.append(skill_count)
 
     matches.sort(key=lambda x: x[0], reverse=True)
@@ -72,9 +72,13 @@ if click and uploadedJD and uploadedResumes:
     skills_df = pd.DataFrame(skills_count)
     skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))]
 
-    skills_chart = alt.Chart(skills_df).mark_bar().encode(
-        alt.X('Resume:N', title='Resume'),
-        alt.Y('sum('+','.join(skills_to_search)+'):Q', title='Skill Count')
+    skills_chart = alt.Chart(skills_df).transform_fold(
+        skills_to_search,
+        as_=['Skill', 'Count']
+    ).mark_bar().encode(
+        alt.X('Skill:N', title='Skill'),
+        alt.Y('Count:Q', title='Skill Count'),
+        alt.Color('Resume:N', title='Resume')
     ).properties(
         width=600  # Increase the width as needed
     )
