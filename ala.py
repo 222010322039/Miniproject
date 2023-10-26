@@ -63,7 +63,13 @@ if click and uploadedJD and uploadedResumes:
     for i in range(len(matches)):
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
-        st.write(resume_text)
+        
+        # Extract and display a shorter description (e.g., first 5 lines)
+        resume_lines = resume_text.split('\n')[:5]
+        summarized_resume = "\n".join(resume_lines)
+        st.write("Summary of Resume:")
+        st.write(summarized_resume)
+        
         st.write("Skills Count:")
         st.write(skills_count[i])
         st.write("-" * 50)
@@ -100,4 +106,4 @@ if click and uploadedJD and uploadedResumes:
 
     st.altair_chart(match_percentages_chart, use_container_width=True)
 
-st.caption(" ~ made by Team P7132")
+st.caption(" ~ made by Team P7132")
