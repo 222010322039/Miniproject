@@ -4,11 +4,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import altair as alt
-from gensim.summarization import summarize
-from pyresparser import ResumeParser
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
-import io
+import streamlit as st
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -16,9 +12,12 @@ st.subheader("NLP Based Resume Screening")
 # Define a list of skills to search for in the resumes
 skills_to_search = ["Python", "Java", "Machine Learning", "Data Analysis", "Communication", "Teamwork", "Project Management"]
 
-st.caption("Aim of this project is to check whether a candidate is qualified for a role based on his or her education, experience, and other information captured on their resume. In a nutshell, it's a form of pattern matching between a job's requirements and the qualifications of a candidate based on their resume.")
+st.caption("Aim of this project is to check whether a candidate is qualified for a role based on his or her education, experience, and other information captured on their resume. It's a form of pattern matching between a job's requirements and the qualifications of a candidate based on their resume.")
 
+# New Feature 1: Upload Job Description
 uploadedJD = st.file_uploader("Upload Job Description", type="pdf")
+
+# New Feature 2: Upload Resumes
 uploadedResumes = st.file_uploader("Upload resumes", type="pdf", accept_multiple_files=True)
 
 click = st.button("Process")
@@ -40,9 +39,7 @@ if click and uploadedJD and uploadedResumes:
 
     matches = []
     skills_count = []
-
-    # Initialize word cloud data
-    wordcloud_data = ""
+    academic_percentages = []
 
     for idx, uploadedResume in enumerate(uploadedResumes):
         try:
@@ -63,8 +60,12 @@ if click and uploadedJD and uploadedResumes:
         skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
         skills_count.append(skill_count)
 
-        # Update word cloud data
-        wordcloud_data += resume_text
+        # New Feature 3: Extract Academic Percentages
+        # This example extracts CGPA; you can customize it for your needs.
+        academic_percentages.append({
+            'Resume': f"Resume {idx + 1}",
+            'CGPA': extract_cgpa(resume_text),  # Implement extract_cgpa function
+        })
 
     matches.sort(key=lambda x: x[0], reverse=True)
 
@@ -75,12 +76,16 @@ if click and uploadedJD and uploadedResumes:
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
         
-        # Extract and display a shorter description (e.g., first 5 lines)
+        # New Feature 4: Summary Sentences
         resume_lines = resume_text.split('\n')[:5]
         summarized_resume = "\n".join(resume_lines)
         st.write("Summary of Resume:")
         st.write(summarized_resume)
         
+        # New Feature 5: Display Academic Percentages
+        st.write("Academic Percentages:")
+        st.write(academic_percentages[i])
+
         st.write("Skills Count:")
         st.write(skills_count[i])
         st.write("-" * 50)
@@ -116,13 +121,5 @@ if click and uploadedJD and uploadedResumes:
     )
 
     st.altair_chart(match_percentages_chart, use_container_width=True)
-
-    # Word Cloud
-    st.subheader("Word Cloud of Most Mentioned Words")
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(wordcloud_data)
-    plt.figure(figsize=(8, 4))
-    plt.imshow(wordcloud, interpolation='bilinear')
-    plt.axis("off")
-    st.pyplot()
 
 st.caption(" ~ made by Team P7132")
