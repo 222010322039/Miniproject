@@ -38,7 +38,7 @@ if click and uploadedJD and uploadedResumes:
 
         similarity_matrix = cosine_similarity(matrix, cv.transform([resume_text]))
         match = similarity_matrix[0][0] * 100
-        match = round(match, 2)
+        match = round match, 2)
 
         matches.append((match, resume_text))
 
@@ -54,7 +54,7 @@ if click and uploadedJD and uploadedResumes:
         st.write("-" * 50)
 
     # Create a bar chart using Altair
-    df = pd.DataFrame({'Resume': [f"Resume {i+1}" for i in range(len(percentages)], 'Match Percentage': percentages})
+    df = pd.DataFrame({'Resume': [f"Resume {i+1}" for i in range(len(percentages))], 'Match Percentage': percentages})
     chart = alt.Chart(df).mark_bar().encode(
         x='Resume',
         y='Match Percentage'
