@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import altair as alt
+from gensim.summarization import summarize
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -63,7 +64,9 @@ if click and uploadedJD and uploadedResumes:
     for i in range(len(matches)):
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
-        st.write(resume_text)
+        st.write("Summary of Resume:")
+        summarized_text = summarize(resume_text, ratio=0.2)  # Adjust ratio as needed
+        st.write(summarized_text)
         st.write("Skills Count:")
         st.write(skills_count[i])
         st.write("-" * 50)
@@ -87,7 +90,7 @@ if click and uploadedJD and uploadedResumes:
 
     # Create a bar chart for match percentages
     match_percentages_df = pd.DataFrame({
-        'Resume': [f"Resume {i+1}" for i in range(len(percentages))],
+        'Resume': [f"Resume {i+1}" for i in range(len(percentages)],
         'Match Percentage': percentages
     })
 
