@@ -100,7 +100,7 @@ if click and uploadedJD and uploadedResumes:
 
     # Create a bar chart using Altair for skills count
     skills_df = pd.DataFrame(skills_count)
-    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))
+    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))]
 
     skills_chart = alt.Chart(skills_df).transform_fold(
         skills_to_search,
