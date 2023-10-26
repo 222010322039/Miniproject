@@ -76,7 +76,7 @@ if click and uploadedJD and uploadedResumes:
         alt.X('Resume:N', title='Resume'),
         alt.Y('sum('+','.join(skills_to_search)+'):Q', title='Skill Count')
     ).properties(
-        width=400
+        width=600  # Increase the width as needed
     )
 
     st.altair_chart(skills_chart, use_container_width=True)
