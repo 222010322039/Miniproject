@@ -37,8 +37,7 @@ if click and uploadedJD and uploadedResumes:
         resume_text = resume_text.lower()
 
         similarity_matrix = cosine_similarity(matrix, cv.transform([resume_text]))
-        match = similarity_matrix[0][0] * 100
-        match = round match, 2)
+        match = round(match, 2)
 
         matches.append((match, resume_text))
 
