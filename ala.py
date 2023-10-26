@@ -6,10 +6,11 @@ import pandas as pd
 import altair as alt
 import subprocess  # Import subprocess for library installation
 
-# Install Gensim within Streamlit
-subprocess.call(["pip", "install", "gensim"])
+# Install bert-extractive-summarizer within Streamlit
+subprocess.call(["pip", "install", "bert-extractive-summarizer"])
 
-from gensim.summarization import summarize  # Import summarize from Gensim
+# Import necessary modules for summarization
+from summarizer import Summarizer
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -70,8 +71,12 @@ if click and uploadedJD and uploadedResumes:
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
         st.write("Summary of Resume:")
-        summarized_text = summarize(resume_text, ratio=0.2)  # Adjust ratio as needed
+
+        # Summarize the resume text
+        summarizer = Summarizer()
+        summarized_text = summarizer(resume_text, ratio=0.2)  # Adjust ratio as needed
         st.write(summarized_text)
+
         st.write("Skills Count:")
         st.write(skills_count[i])
         st.write("-" * 50)
