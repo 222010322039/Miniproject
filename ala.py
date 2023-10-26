@@ -37,6 +37,7 @@ if click and uploadedJD and uploadedResumes:
     matches = []
     skills_count = []
     btech_cgpa = []
+    academic_percentages = []
 
     for idx, uploadedResume in enumerate(uploadedResumes):
         try:
@@ -64,6 +65,13 @@ if click and uploadedJD and uploadedResumes:
         else:
             btech_cgpa.append(None)
 
+        # Extract academic percentage from CGPA
+        academic_cgpa_match = re.search(r"CGPA: (\d+\.\d+|\d+)%", resume_text)
+        if academic_cgpa_match:
+            academic_percentages.append(float(academic_cgpa_match.group(1)))
+        else:
+            academic_percentages.append(None)
+
     matches.sort(key=lambda x: x[0], reverse=True)
 
     st.write("Top Resumes:")
@@ -84,6 +92,9 @@ if click and uploadedJD and uploadedResumes:
 
         # Display B.Tech CGPA
         st.write("B.Tech CGPA: {:.2f}".format(btech_cgpa[i] if btech_cgpa[i] is not None else 0.0))
+
+        # Display academic percentage
+        st.write("Academic Percentage: {:.2f}%".format(academic_percentages[i] if academic_percentages[i] is not None else 0.0))
 
         st.write("-" * 50)
 
