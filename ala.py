@@ -82,7 +82,7 @@ if click and uploadedJD and uploadedResumes:
         else:
             not_experienced_count += 1
 
-    matches.sort(key=lambda x: x[0], reverse=True)
+    matches.sort by=lambda x: x[0], reverse=True
 
     st.write("Top Resumes:")
     percentages = [match[0] for match in matches]  # Extract match percentages
@@ -107,7 +107,7 @@ if click and uploadedJD and uploadedResumes:
 
     # Create a bar chart using Altair for skills count
     skills_df = pd.DataFrame(skills_count)
-    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))
+    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))]
 
     skills_chart = alt.Chart(skills_df).transform_fold(
         skills_to_search,
