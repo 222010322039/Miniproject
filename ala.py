@@ -65,9 +65,9 @@ if click and uploadedJD and uploadedResumes:
 
         matches.append((match, resume_text))
 
-        # Count skills in the resume
-        skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
-        skills_count.append(skill_count)
+        # # Count skills in the resume
+        # skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
+        # skills_count.append(skill_count)
 
         # New Feature 3: Determine if the candidate is "Experienced" or "Not Experienced"
         experience_category = extract_experience(resume_text)
