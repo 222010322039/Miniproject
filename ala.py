@@ -60,7 +60,7 @@ if click and uploadedJD and uploadedResumes:
     st.write("Top Resumes:")
     percentages = [match[0] for match in matches]  # Extract match percentages
 
-for i in range(len(matches)):
+    for i in range(len(matches)):
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
         st.write(resume_text)
@@ -70,7 +70,7 @@ for i in range(len(matches)):
 
     # Create a bar chart using Altair for skills count
     skills_df = pd.DataFrame(skills_count)
-    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))]
+    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count)]
 
     skills_chart = alt.Chart(skills_df).mark_bar().encode(
         alt.X('Resume:N', title='Resume'),
