@@ -6,16 +6,12 @@ import pandas as pd
 import altair as alt
 import re
 
-def extract_experience(resume_text):
+def categorize_experience(resume_text):
     # Search for the word "Experience" in the resume text
-    experience_match = re.search(r'Experience', resume_text)
-    
-    if experience_match:
-        # If "Experience" is found, extract the text following it
-        experience_text = resume_text[experience_match.end():]
-        return experience_text.strip()
+    if re.search(r'Experience', resume_text):
+        return "Experienced"
     else:
-        return "No experience found"
+        return "Not Experienced"
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -52,6 +48,9 @@ if click and uploadedJD and uploadedResumes:
     skills_count = []
     experience_text = []
 
+    experienced_count = 0
+    not_experienced_count = 0
+
     for idx, uploadedResume in enumerate(uploadedResumes):
         try:
             with pdfplumber.open(uploadedResume) as pdf:
@@ -71,11 +70,17 @@ if click and uploadedJD and uploadedResumes:
         skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
         skills_count.append(skill_count)
 
-        # New Feature 3: Extract Experience
+        # New Feature 3: Categorize Experience
+        experience_category = categorize_experience(resume_text)
         experience_text.append({
             'Resume': f"Resume {idx + 1}",
-            'Experience': extract_experience(resume_text),
+            'Experience': experience_category,
         })
+
+        if experience_category == "Experienced":
+            experienced_count += 1
+        else:
+            not_experienced_count += 1
 
     matches.sort(key=lambda x: x[0], reverse=True)
 
@@ -102,7 +107,7 @@ if click and uploadedJD and uploadedResumes:
 
     # Create a bar chart using Altair for skills count
     skills_df = pd.DataFrame(skills_count)
-    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))]
+    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))
 
     skills_chart = alt.Chart(skills_df).transform_fold(
         skills_to_search,
@@ -131,5 +136,16 @@ if click and uploadedJD and uploadedResumes:
     )
 
     st.altair_chart(match_percentages_chart, use_container_width=True)
+
+    # New Feature 6: Pie Chart for Experience
+    st.write("Distribution of Experience:")
+    experience_data = pd.DataFrame({
+        'Category': ['Experienced', 'Not Experienced'],
+        'Count': [experienced_count, not_experienced_count]
+    })
+    st.altair_chart(alt.Chart(experience_data).mark_arc().encode(
+        color='Category:N',
+        theta='Count:Q'
+    ), use_container_width=True)
 
 st.caption(" ~ made by Team P7132")
