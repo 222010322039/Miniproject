@@ -4,13 +4,6 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import altair as alt
-import subprocess  # Import subprocess for library installation
-
-# Install bert-extractive-summarizer within Streamlit
-subprocess.call(["pip", "install", "bert-extractive-summarizer"])
-
-# Import necessary modules for summarization
-from summarizer import Summarizer
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -70,20 +63,14 @@ if click and uploadedJD and uploadedResumes:
     for i in range(len(matches)):
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
-        st.write("Summary of Resume:")
-
-        # Summarize the resume text
-        summarizer = Summarizer()
-        summarized_text = summarizer(resume_text, ratio=0.2)  # Adjust ratio as needed
-        st.write(summarized_text)
-
+        st.write(resume_text)
         st.write("Skills Count:")
         st.write(skills_count[i])
         st.write("-" * 50)
 
     # Create a bar chart using Altair for skills count
     skills_df = pd.DataFrame(skills_count)
-    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(percentages))]
+    skills_df['Resume'] = [f"Resume {i+1}" for i in range(len(skills_count))]
 
     skills_chart = alt.Chart(skills_df).transform_fold(
         skills_to_search,
@@ -113,4 +100,4 @@ if click and uploadedJD and uploadedResumes:
 
     st.altair_chart(match_percentages_chart, use_container_width=True)
 
-st.caption(" ~ made by Team P7132")
+st.caption(" ~ made by Team P7132")
