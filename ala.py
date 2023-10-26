@@ -60,7 +60,7 @@ if click and uploadedJD and uploadedResumes:
     st.write("Top Resumes:")
     percentages = [match[0] for match in matches]  # Extract match percentages
 
-    for i in range(len(matches):
+for i in range(len(matches)):
         match_percentage, resume_text = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
         st.write(resume_text)
