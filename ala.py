@@ -4,6 +4,10 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import altair as alt
+st.markdown(
+    '<link rel="stylesheet" type="text/css" href="custom.css">',
+    unsafe_allow_html=True
+)
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
