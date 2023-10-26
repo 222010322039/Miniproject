@@ -2,6 +2,8 @@ import streamlit as st
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import gensim
+from gensim.summarization import summarize
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -43,15 +45,19 @@ if click and uploadedJD and uploadedResumes:
         match = similarity_matrix[0][0] * 100
         match = round(match, 2)
 
-        matches.append((match, resume_text))
+        # Summarize the resume text
+        summarized_resume = summarize(resume_text, ratio=0.2)  # Adjust ratio as needed
+
+        matches.append((match, summarized_resume))
 
     matches.sort(key=lambda x: x[0], reverse=True)
 
     st.write("Top Resumes:")
     for i in range(len(matches)):
-        match_percentage, resume_text = matches[i]
+        match_percentage, summarized_resume = matches[i]
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
-        st.write(resume_text)
+        st.write("Summarized Resume:")
+        st.write(summarized_resume)
         st.write("-" * 50)
 
     # Create a bar chart to display match percentages
