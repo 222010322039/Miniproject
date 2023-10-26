@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
@@ -54,5 +53,9 @@ if click and uploadedJD and uploadedResumes:
         st.write(f"Match Percentage for Resume {i + 1}: {match_percentage}%")
         st.write(resume_text)
         st.write("-" * 50)
+
+    # Create a bar chart to display match percentages
+    chart_data = [match[0] for match in matches]
+    st.bar_chart(chart_data)
 
 st.caption(" ~ made by Team P7132")
