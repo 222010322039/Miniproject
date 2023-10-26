@@ -1,3 +1,4 @@
+pip install gensim
 import streamlit as st
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
