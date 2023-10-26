@@ -58,15 +58,15 @@ if click and uploadedJD and uploadedResumes:
         skill_count = {skill: resume_text.count(skill.lower()) for skill in skills_to_search}
         skills_count.append(skill_count)
 
-        # Extract B.Tech CGPA using regular expressions
+        # Extract B.Tech CGPA and academic percentages using regular expressions
         cgpa_match = re.search(r"B\.Tech CGPA: (\d+\.\d+|\d+)", resume_text)
+        academic_cgpa_match = re.search(r"CGPA: (\d+\.\d+|\d+)%", resume_text)
+
         if cgpa_match:
             btech_cgpa.append(float(cgpa_match.group(1)))
         else:
             btech_cgpa.append(None)
 
-        # Extract academic percentage from CGPA
-        academic_cgpa_match = re.search(r"CGPA: (\d+\.\d+|\d+)%", resume_text)
         if academic_cgpa_match:
             academic_percentages.append(float(academic_cgpa_match.group(1)))
         else:
@@ -144,3 +144,4 @@ if click and uploadedJD and uploadedResumes:
     st.altair_chart(match_percentages_chart, use_container_width=True)
 
 st.caption(" ~ made by Team P7132")
+
