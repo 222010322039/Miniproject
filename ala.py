@@ -1,11 +1,15 @@
-pip install gensim
 import streamlit as st
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import altair as alt
-from gensim.summarization import summarize
+import subprocess  # Import subprocess for library installation
+
+# Install Gensim within Streamlit
+subprocess.call(["pip", "install", "gensim"])
+
+from gensim.summarization import summarize  # Import summarize from Gensim
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
