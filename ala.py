@@ -93,11 +93,11 @@ if click and uploadedJD and uploadedResumes:
         # New Feature 4: Display a Summary of Resume
         resume_lines = resume_text.split('\n')[:5]
         summarized_resume = "\n".join(resume_lines)
-        st.write("Summary of Resume:")
+        st.write("About Resume:")
         st.write(summarized_resume)
         
         # New Feature 5: Display Experience Category
-        st.write("Experience Category:")
+        st.write("Category:")
         st.write(experience_data[i])
 
         st.write("Skills Count:")
