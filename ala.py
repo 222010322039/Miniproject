@@ -2,7 +2,7 @@ import streamlit as st
 import pdfplumber
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import matplotlib.pyplot as plt
+import matplotlib_inline as mpli  # Import matplotlib-inline
 
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
@@ -29,6 +29,7 @@ if click and uploadedJD and uploadedResumes:
     plt.xlabel("Resumes")
     plt.ylabel("Match Percentage")
     plt.title("Match Percentage for Resumes")
-    st.pyplot(plt)  # Display the graph in Streamlit
+
+    st.pyplot(plt)  # Display the graph in Streamlit using st.pyplot
 
 st.caption(" ~ made by Team P7132")
