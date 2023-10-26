@@ -8,7 +8,12 @@ import altair as alt
 st.title("Candidate Selection Tool")
 st.subheader("NLP Based Resume Screening")
 
-# ... (Rest of your code)
+st.caption("Aim of this project is to check whether a candidate is qualified for a role based on his or her education, experience, and other information captured on their resume. In a nutshell, it's a form of pattern matching between a job's requirements and the qualifications of a candidate based on their resume.")
+
+uploadedJD = st.file_uploader("Upload Job Description", type="pdf")
+uploadedResumes = st.file_uploader("Upload resumes", type="pdf", accept_multiple_files=True)
+
+click = st.button("Process")
 
 if click and uploadedJD and uploadedResumes:
     try:
@@ -37,7 +42,7 @@ if click and uploadedJD and uploadedResumes:
         resume_text = resume_text.lower()
 
         similarity_matrix = cosine_similarity(matrix, cv.transform([resume_text]))
-        match = round(match, 2)
+        match = round(similarity_matrix[0][0] * 100, 2)
 
         matches.append((match, resume_text))
 
@@ -53,7 +58,7 @@ if click and uploadedJD and uploadedResumes:
         st.write("-" * 50)
 
     # Create a bar chart using Altair
-    df = pd.DataFrame({'Resume': [f"Resume {i+1}" for i in range(len(percentages))], 'Match Percentage': percentages})
+    df = pd.DataFrame({'Resume': [f"Resume {i+1}" for i in range(len(percentages)], 'Match Percentage': percentages})
     chart = alt.Chart(df).mark_bar().encode(
         x='Resume',
         y='Match Percentage'
